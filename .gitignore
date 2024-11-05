@@ -1,0 +1,30 @@
+# Node.js
+**/package-lock.json
+**/node_modules/
+
+
+# Cypress
+cypress/results/*
+cypress/reports/*
+cypress/screenshots/*
+cypress/videos/*
+
+## Api e Interface gráfica do gerenciador de tarefas Mark L
+# SQLite
+apps/markL/
+apps/markL/**/*.sqlite-shm
+apps/markL/**/*.sqlite-wal
+
+## Allure Reports
+allure-reports/*
+
+
+## Yarm e Pacotes Node
+.editorconfig
+.gitattributes
+.yarn/
+.yarnrc.yml
+yarn.lock
+**/package-lock.json
+**/node_modules/
+
