@@ -7,21 +7,8 @@ describe('tarefas', () =>{
 
         const taskName = 'Ler um livro de Node.js'
 
-        cy.request({
-            url: 'http://localhost:3333/helper/tasks',
-            method: 'DELETE',
-            body: {name: taskName }
-        }).then(response => {
-            expect(response.status).to.equal(204)
-          })
-
-        cy.visit('http://localhost:3000/')
-
-        cy.get('input[placeholder="Add a new Task"]')
-           // .type(faker.music.songName())
-            .type(taskName)
-        
-        cy.contains('button', 'Create').click()
+        cy.removeTaskByName(taskName)
+        cy.createTask(taskName)
 
         // cy.get('main div p')
         //     .should('be.visible')
@@ -38,36 +25,15 @@ describe('tarefas', () =>{
             "is_done": false
         }
             
-        cy.request({
-            url: 'http://localhost:3333/helper/tasks',
-            method: 'DELETE',
-            body: {name: task.name}
-        }).then(response => {
-            expect(response.status).to.equal(204)
-           })
-
-        cy.request({
-            url: 'http://localhost:3333/tasks',
-            method: 'POST',
-            body: task
-        }).then(response => {
-            expect(response.status).to.equal(201)
-          })
-
-
-        cy.visit('http://localhost:3000/')
-
-        cy.get('input[placeholder="Add a new Task"]')
-           // .type(faker.music.songName())
-            .type(task.name)
-        
-        cy.contains('button', 'Create').click()
+        cy.removeTaskByName(task.name)
+        cy.postTask(task)
+        cy.createTask(task.name)
 
         cy.get('.swal2-html-container')
             .should('be.visible')
             .should('have.text', 'Task already exists!')
-
-
     })    
 
 })
+
+
