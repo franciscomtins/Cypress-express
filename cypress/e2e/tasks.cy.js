@@ -3,6 +3,14 @@
 
 describe('tarefas', () =>{
 
+    let testData;
+
+    before(()=> {
+        cy.fixture('tasks').then(t => {
+            testData = t
+        })
+    })
+
     context('cadastro', () => {
 
         it('deve cadastrar uma nova tarefa', ()=> {
@@ -20,15 +28,18 @@ describe('tarefas', () =>{
                 .should('be.visible')
         })
     
-        it('não deve permitir tarefa duplicada', ()=> {
+        it.only('não deve permitir tarefa duplicada', ()=> {
     
-            const task =  {
-                "name": 'Estudar javascript',
-                "is_done": false
-            }
+            const task =  testData.dup
                 
-            cy.removeTaskByName(task.name)
-            cy.postTask(task)
+            cy.removeTaskByName(task.name).then(() => {
+                cy.contains('p', task.name).should('not.exist')
+            });
+            
+            cy.postTask(task).then(() => {
+                cy.contains('p', task).should('be.visible')
+            })
+
             cy.createTask(task.name)
     
             cy.get('.swal2-html-container')
@@ -45,14 +56,16 @@ describe('tarefas', () =>{
     context('atualização', () => {
 
         it('Deve concluir uma tarefa', ()=> {
+
             const task = {
                 name: 'Pagar contas de consumo',
                 is_done: false
             } 
 
-            cy.visit('http://localhost:3000/')
+            cy.visit('/')
 
             cy.removeTaskByName(task.name)
+            
             cy.postTask(task) 
 
             cy.contains('p', task.name)
@@ -67,13 +80,13 @@ describe('tarefas', () =>{
 
     context('exclusão', () => {
 
-        it.only('Deve remover uma tarefa', ()=> {
+        it('Deve remover uma tarefa', ()=> {
             const task = {
                 name: 'Estudar javascript',
                 is_done: false
             } 
 
-            cy.visit('http://localhost:3000/')
+            cy.visit('/')
 
             cy.removeTaskByName(task.name)
             cy.postTask(task) 

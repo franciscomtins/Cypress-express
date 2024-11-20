@@ -3,6 +3,10 @@ const webpack = require('@cypress/webpack-preprocessor');
 
 module.exports = defineConfig({
   e2e: {
+    baseUrl: 'http://localhost:3000',
+    env: {
+      apiUrl: 'http://localhost:3333'
+    } ,
     setupNodeEvents(on, config) {
       // Configura o webpack como preprocessor
       const options = {
