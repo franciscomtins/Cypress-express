@@ -40,12 +40,11 @@ describe('tarefas', () =>{
             cy.createTask()
             cy.isRequired('This is a required field')
         }) 
-
     })
 
     context('atualização', () => {
 
-        it.only('Deve concluir uma tarefa', ()=> {
+        it('Deve concluir uma tarefa', ()=> {
             const task = {
                 name: 'Pagar contas de consumo',
                 is_done: false
@@ -62,11 +61,31 @@ describe('tarefas', () =>{
                 .click()
 
             cy.contains('p', task.name)
-                .should('have.css', 'text-decoration-line', 'line-through')
+                .should('have.css', 'text-decoration-line', 'line-through')       
         })
+    })
 
+    context('exclusão', () => {
 
+        it.only('Deve remover uma tarefa', ()=> {
+            const task = {
+                name: 'Estudar javascript',
+                is_done: false
+            } 
 
+            cy.visit('http://localhost:3000/')
+
+            cy.removeTaskByName(task.name)
+            cy.postTask(task) 
+
+            cy.contains('p', task.name)
+                .parent()
+                .find('button[class*=ItemDelete]')
+                .click()
+
+            cy.contains('p', task.name)
+                .should('not.exist')       
+        })
     })
 
 
